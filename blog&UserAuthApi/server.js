@@ -6,7 +6,7 @@ const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const loginRoutes = require('./routes/loginRoutes');
-
+const blogRoutes = require('./routes/blogRoutes');
 //app.use(express.urlencoded({extended:false}));
 //app.use(express.json());
 app.use(bodyParser.urlencoded({extended:true}));
@@ -29,6 +29,6 @@ app.get('/',(req,res)=>{
 });
 
 //user login and registration
-app.use('/user-reg',loginRoutes);
-app.use('/user-login',loginRoutes);
-
+app.use('/user',loginRoutes);
+//blogs
+app.use('/blog',blogRoutes);
