@@ -48,9 +48,24 @@ const deleteBlog = (req,res,next)=>{
     })
 }
 
+const updateblog = (req,res,next)=>{
+    const _id = req.params.id;
+    Blog.findByIdAndUpdate(_id,req.body)
+    .then(()=>{
+        Blog.findOne({_id})
+        .then(blog=>{
+            res.send(blog);
+        })
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+}
+
 module.exports ={
     getBlogs,
     writeBlog,
     singleBlog,
-    deleteBlog
+    deleteBlog,
+    updateblog
 }
