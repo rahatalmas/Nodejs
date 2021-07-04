@@ -1,6 +1,8 @@
 const express = require('express');
 const app = express();
 const PORT = 4000;
+//const ejs = require('ejs');
+const cookie = require('cookie-parser');
 const cors = require('cors');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
@@ -24,8 +26,7 @@ mongoose.connect(db,{useNewUrlParser:true,useUnifiedTopology:true})
 });
 
 app.get('/',(req,res)=>{
-    res.send('hello world');
-    
+    res.send('hello from server');
 });
 
 //user login and registration

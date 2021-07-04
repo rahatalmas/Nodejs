@@ -1,6 +1,8 @@
 const express=require('express');
 const bcrypt = require('bcrypt');
 const User = require('../models/UserModel');
+const jwt = require('jsonwebtoken');
+const cookie = require('cookie-parser');
 
 const userRegister = (req,res,next)=>{
    bcrypt.hash(req.body.password,10,(err,hash)=>{
@@ -14,7 +16,12 @@ const userRegister = (req,res,next)=>{
        });
        user.save()
        .then(result=>{
-           res.send(`registration successfull ${result}`);
+          const accesstoken =  jwt.sign({id:user._id},'secretToken',{
+            expiresIn:"1d"
+           });
+           res.cookie('jwt',accesstoken,{httpOnly:true,maxAge:3600000});
+           res.redirect('/blog/allblogs');
+           console.log(`registration successfull token: ${accesstoken}`);
        })
        .catch(err=>{
            console.log(err);
@@ -33,7 +40,12 @@ const userLogin = (req,res,next)=>{
                       console.log(err);
                   }
                   if(result){
-                      res.send({message:`login successfull`});
+                    const accesstoken =  jwt.sign({id:user._id},'secretToken',{
+                       expiresIn:"1d"
+                         });
+                       res.cookie('jwt',accesstoken,{httpOnly:true,maxAge:3600000});
+                       res.redirect('/blog/allblogs');
+                       //res.send({message:`login successfull`});
                   }else{
                       res.send({message:"incorrect password"});
                   }
